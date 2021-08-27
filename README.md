@@ -25,30 +25,31 @@ go get github.com/hlts2/gticker
 package main
 
 import (
-	"fmt"
-	"time"
+    "fmt"
+    "time"
 
-	"github.com/hlts2/gticker"
+    "github.com/hlts2/gticker"
 )
 
 func main() {
     ticker := gticker.NewInstantTicker(1 * time.Second)
-	done := make(chan bool)
+    done := make(chan bool)
 
-	go func() {
-		for {
-			select {
-			case <-done:
-				return
-			case t := <-ticker.C():
-				fmt.Println("Tick at", t)
-			}
-		}
-	}()
-	time.Sleep(3 * time.Second)
-	ticker.Stop()
-	done <- true
-	fmt.Println("Ticker stopped")
+    go func() {
+        for {
+            select {
+            case <-done:
+                return
+            case t := <-ticker.C():
+                fmt.Println("Tick at", t)
+            }
+        }
+    }()
+
+    time.Sleep(3 * time.Second)
+    ticker.Stop()
+    done <- true
+    fmt.Println("Ticker stopped")
 }
 ```
 
